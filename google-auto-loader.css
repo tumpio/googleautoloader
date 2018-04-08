@@ -1,0 +1,28 @@
+#foot,
+.next-col #extrares,
+#bottomads,
+.next-col #imagebox_bigimages {
+    display: none !important;
+}
+
+.next-col {
+    margin-left: 150px;
+}
+
+.page-number {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 20px;
+    margin-bottom: 2em;
+}
+
+.page-number:after {
+    content: "";
+    position: absolute;
+    width: 560px;
+    left: 3em;
+    background-color: #ededed;
+    display: block;
+    height: 1px;
+}

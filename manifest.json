@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Google Auto-Load",
-  "version": "1.0",
+  "version": "1.0.1",
   "description": "Load more results when scrolling",
   "icons": {
     "48": "icon.svg",

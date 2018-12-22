@@ -1,41 +1,49 @@
-let pageNumber = 0;
+const centerElement = "#center_col";
+const loadWindowSize = 1.6;
+const filtersAll = ["#foot", "#bottomads"];
+const filtersCol = filtersAll.concat(["#extrares", "#imagebox_bigimages"]);
+
+let pageNumber = 1;
 let prevScrollY = 0;
 let nextPageLoading = false;
 
 function requestNextPage() {
+    nextPageLoading = true;
     let nextPage = new URL(location.href);
     if (!nextPage.searchParams.has("q")) return;
 
-    nextPageLoading = true;
-    pageNumber++;
-
-    nextPage.searchParams.set("start", pageNumber * 10 + "");
-
-    document.body.setAttribute("next-page-loading", "true");
+    nextPage.searchParams.set("start", String(pageNumber * 10));
 
     fetch(nextPage.href)
         .then(response => response.text())
         .then(text => {
-            const parser = new DOMParser();
-            const htmlDocument = parser.parseFromString(text, "text/html");
-            const col = document.createElement("div");
-            const next_col = htmlDocument.documentElement.querySelector("#center_col");
+            let parser = new DOMParser();
+            let htmlDocument = parser.parseFromString(text, "text/html");
+            let content = htmlDocument.documentElement.querySelector(centerElement);
 
-            next_col.id = "col_" + pageNumber;
-            col.className = "next-col";
+            content.id = "col_" + pageNumber;
+            filter(content, filtersCol);
 
-            const pageMarker = document.createElement("div");
-            pageMarker.textContent = pageNumber + 1 + "";
+            let pageMarker = document.createElement("div");
+            pageMarker.textContent = String(pageNumber + 1);
             pageMarker.className = "page-number";
-            col.appendChild(pageMarker);
-            col.appendChild(next_col);
 
-            document.getElementById("rcnt").appendChild(col);
+            let col = document.createElement("div");
+            col.className = "next-col";
+            col.appendChild(pageMarker);
+            col.appendChild(content);
+            document.querySelector(centerElement).appendChild(col);
+
+            if (!content.querySelector("#ires")) {
+                // end of results
+                window.removeEventListener("scroll", onScrollDocumentEnd);
+                return;
+            }
+
+            pageNumber++;
             nextPageLoading = false;
-            document.body.removeAttribute("next-page-loading");
         });
 }
-
 
 function onScrollDocumentEnd() {
     let y = window.scrollY;
@@ -47,12 +55,22 @@ function onScrollDocumentEnd() {
 }
 
 function isDocumentEnd(y) {
-    return (window.innerHeight + y) >= (document.body.clientHeight - (window.innerHeight * 0.60));
+    return y + window.innerHeight * loadWindowSize >= document.body.clientHeight;
+}
+
+function filter(node, filters) {
+    for (let filter of filters) {
+        let child = node.querySelector(filter);
+        if (child) {
+            child.parentNode.removeChild(child);
+        }
+    }
 }
 
 function init() {
     prevScrollY = window.scrollY;
     window.addEventListener("scroll", onScrollDocumentEnd);
+    filter(document, filtersAll);
 }
 
 document.addEventListener("DOMContentLoaded", init);

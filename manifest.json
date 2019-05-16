@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Google Auto-Load",
-  "version": "1.0.1",
+  "version": "1.1.1",
   "description": "Load more results when scrolling",
   "icons": {
     "48": "icon.svg",
@@ -412,6 +412,10 @@
     }
   ],
   "permissions": [
+    "https://api.twitch.tv/helix/clips?id=*",
+    "https://api.twitch.tv/helix/users?login=*",
+    "https://api.twitch.tv/helix/videos?id=*",
+    "https://vimeo.com/api/oembed.json?url=*",
     "https://encrypted.google.ad/*",
     "https://encrypted.google.ae/*",
     "https://encrypted.google.al/*",

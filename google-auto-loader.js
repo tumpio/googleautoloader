@@ -38,7 +38,7 @@ function requestNextPage() {
             document.querySelector(centerElement).appendChild(col);
             fetchThumbs(content);
 
-            if (!content.querySelector("#ires")) {
+            if (!content.querySelector("#rso")) {
                 // end of results
                 window.removeEventListener("scroll", onScrollDocumentEnd);
                 return;

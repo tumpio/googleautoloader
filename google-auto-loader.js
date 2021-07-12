@@ -25,6 +25,7 @@ function requestNextPage() {
             let content = htmlDocument.documentElement.querySelector(centerElement);
 
             content.id = "col_" + pageNumber;
+            content.className = "";
             filter(content, filtersCol);
 
             let pageMarker = document.createElement("div");
